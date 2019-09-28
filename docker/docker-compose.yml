@@ -1,0 +1,45 @@
+version: "3.0"
+
+networks:
+    default:
+        external:
+            name: loblab
+
+services:
+
+    ws2tsdb1:
+        build:
+            context: .
+        image: loblab/ws2tsdb
+        hostname: ws2tsdb1
+        container_name: ws2tsdb1
+        restart: "unless-stopped"
+        #stdin_open: true
+        #tty: true
+        volumes:
+            - "../scripts:/scripts"
+        command: [ "/scripts/ws2tsdb.py",
+            "-r", "ws://192.168.12.34:5678",
+            "-i", "field",
+            "-d", "mydb",
+            "-t", "mytable",
+            "-o", "field1"]
+
+    ws2tsdb2:
+        build:
+            context: .
+        image: loblab/ws2tsdb
+        hostname: ws2tsdb2
+        container_name: ws2tsdb2
+        restart: "unless-stopped"
+        #stdin_open: true
+        #tty: true
+        volumes:
+            - "../scripts:/scripts"
+        command: [ "/scripts/ws2tsdb.py",
+            "-r", "ws://192.168.12.56:5678",
+            "-i", "field",
+            "-d", "mydb",
+            "-t", "mytable",
+            "-o", "field2"]
+
